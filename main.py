@@ -22,3 +22,6 @@ def generate_persona(data: PersonaRequest):
     return {
         "summary": f"A {data.age}-year-old from {data.location} earning {data.income}."
     }
+@app.get("/personas")
+def get_personas():
+    return {"message": "This will return Airtable data soon!"}
