@@ -36,7 +36,8 @@ def get_personas():
     headers = {
         "Authorization": f"Bearer {AIRTABLE_API_KEY}"
     }
-
+print("URL:", url)
+print("Headers:", headers)
     response = requests.get(url, headers=headers)
 
     if response.status_code != 200:
