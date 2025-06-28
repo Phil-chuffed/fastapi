@@ -6,7 +6,10 @@ app = FastAPI()
 # Just to confirm the app is working
 @app.get("/")
 def read_root():
-    return {"message": "API is working!"}
+    return {
+        "greeting": "Hello, Phil!",
+        "message": "You're running your own FastAPI app now 🚀"
+        }
 
 # Dummy data input structure
 class PersonaRequest(BaseModel):
