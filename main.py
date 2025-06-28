@@ -47,30 +47,17 @@ def get_personas():
     return response.json()
 
 @app.get("/insight/female-top-locations")
-def female_top_locations():
-    url = f"https://api.airtable.com/v0/{BASE_ID}/{TABLE_NAME}"
-    headers = {
-        "Authorization": f"Bearer {AIRTABLE_API_KEY}"
-    }
+async def female_top_locations():
+    records = await fetch_airtable_data()
+    location_counts = {}
 
-    response = requests.get(url, headers=headers)
+    for record in records:
+        fields = record.get("fields", {})
+        if fields.get("gender", "").lower() == "female":
+            location = fields.get("location", "Unknown")
+            location_counts[location] = location_counts.get(location, 0) + 1
 
-    if response.status_code != 200:
-        return JSONResponse(status_code=500, content={"error": "Failed to fetch data", "details": response.text})
+    sorted_locations = sorted(location_counts.items(), key=lambda x: x[1], reverse=True)
+    top_3_locations = [{"location": loc, "count": count} for loc, count in sorted_locations[:3]]
 
-    records = response.json().get("records", [])
-
-    # Extract locations of females
-    female_locations = [
-        record["fields"].get("Location")
-        for record in records
-        if record["fields"].get("Gender") == "Female" and record["fields"].get("Location")
-    ]
-
-    # Count and return top 3
-    top_3 = Counter(female_locations).most_common(3)
-
-    return {
-        "insight": "Top 3 locations for females",
-        "results": [location for location, count in top_3]
-    }
+    return {"top_3_locations": top_3_locations}
