@@ -5,7 +5,7 @@ import requests
 
 app = FastAPI()
 
-# ✅ Confirm app is live
+# Test route
 @app.get("/")
 def read_root():
     return {
@@ -13,7 +13,7 @@ def read_root():
         "message": "You're running your own FastAPI app now 🚀"
     }
 
-# ✅ Dummy POST endpoint
+# Dummy POST endpoint
 class PersonaRequest(BaseModel):
     age: int
     location: str
@@ -25,10 +25,10 @@ def generate_persona(data: PersonaRequest):
         "summary": f"A {data.age}-year-old from {data.location} earning {data.income}."
     }
 
-# ✅ Airtable connection
+# Airtable connection
 AIRTABLE_API_KEY = os.getenv("AIRTABLE_API_KEY")
 BASE_ID = os.getenv("AIRTABLE_BASE_ID")
-TABLE_NAME = "Personas"
+TABLE_NAME = "Personas"  # or use "tb1HrYLxhVDcs2TuA" for table ID
 
 @app.get("/personas")
 def get_personas():
@@ -37,7 +37,16 @@ def get_personas():
         "Authorization": f"Bearer {AIRTABLE_API_KEY}"
     }
 
+    print("🔍 DEBUG INFO")
+    print("Request URL:", url)
+    print("Auth Header:", headers["Authorization"][:20] + "...")
+    print("Base ID:", BASE_ID)
+    print("Table Name:", TABLE_NAME)
+
     response = requests.get(url, headers=headers)
+
+    print("Response Status:", response.status_code)
+    print("Response Body:", response.text)
 
     if response.status_code != 200:
         return {
