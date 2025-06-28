@@ -1,7 +1,21 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 app = FastAPI()
 
+# Just to confirm the app is working
 @app.get("/")
-async def root():
-    return {"greeting": "Hello, World!", "message": "Welcome to FastAPI!"}
+def read_root():
+    return {"message": "API is working!"}
+
+# Dummy data input structure
+class PersonaRequest(BaseModel):
+    age: int
+    location: str
+    income: str
+
+@app.post("/generate")
+def generate_persona(data: PersonaRequest):
+    return {
+        "summary": f"A {data.age}-year-old from {data.location} earning {data.income}."
+    }
