@@ -13,7 +13,7 @@ def read_root():
         "message": "You're running your own FastAPI app now 🚀"
     }
 
-# Dummy POST endpoint
+# Dummy POST endpoint for testing
 class PersonaRequest(BaseModel):
     age: int
     location: str
@@ -36,8 +36,10 @@ def get_personas():
     headers = {
         "Authorization": f"Bearer {AIRTABLE_API_KEY}"
     }
-print("URL:", url)
-print("Headers:", headers)
+
+    print("URL:", url)
+    print("Headers:", headers)
+
     response = requests.get(url, headers=headers)
 
     if response.status_code != 200:
