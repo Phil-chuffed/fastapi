@@ -32,7 +32,7 @@ TABLE_NAME = "Personas"
 
 @app.get("/personas")
 def get_personas():
-    url = f"https://api.airtable.com/v0/{BASE_ID}/{Personas}"
+    url = f"https://api.airtable.com/v0/{BASE_ID}/{TABLE_NAME}"
     headers = {
         "Authorization": f"Bearer {AIRTABLE_API_KEY}"
     }
